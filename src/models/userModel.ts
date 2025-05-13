@@ -6,12 +6,11 @@ interface UserAttributes {
   fullName: string;
   phoneNumber: string;
   email: string;
-  profilePicture?: string;
   password: string;
   deleted: boolean;
 }
 
-interface UserCreationAttributes extends Optional<UserAttributes, "id" | "deleted" | "profilePicture"> {}
+interface UserCreationAttributes extends Optional<UserAttributes, "id" | "deleted" > {}
 
 const User = sequelize.define<Model<UserAttributes, UserCreationAttributes>>("User", {
   id: {
@@ -32,10 +31,6 @@ const User = sequelize.define<Model<UserAttributes, UserCreationAttributes>>("Us
     type: DataTypes.STRING,
     allowNull: false,
     unique: true,
-  },
-  profilePicture: {
-    type: DataTypes.STRING,
-    allowNull: true,
   },
   password: {
     type: DataTypes.STRING,

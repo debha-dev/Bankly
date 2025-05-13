@@ -4,6 +4,7 @@ import cors from "cors";
 import { connectDB } from "./config/databaseConfig";
 import { setupSwagger } from "./config/swagger";
 import {userRouter} from "./routes/userRoute";
+import { accountRouter } from "./routes/accountRoute";
 
 
 dotenv.config();
@@ -14,7 +15,8 @@ const PORT = process.env.PORT;
 app.use(express.json());
 app.use(cors());
 
-app.use("/api/user", userRouter)
+app.use("/api/users", userRouter);
+app.use("/api/accounts", accountRouter);
 
 setupSwagger(app);
 

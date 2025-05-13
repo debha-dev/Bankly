@@ -2,6 +2,7 @@ import { hashPassword, verifyPassword } from "../config/bcrypt";
 import { generateToken } from "../config/token";
 import { User } from "../models/userModel";
 import {Request, Response } from "express";
+import { AuthenticatedRequest } from "../middleware/authMiddleware";
 
 export const signupUserService = async (req: Request, res: Response) => {
   const userData = req.body;
@@ -78,9 +79,12 @@ export const loginUser = async (req:Request, res:Response) => {
   }
 }
 
-export const deleteAccount = async (req: Request, res: Response) => {
-  const loggedInUser = res.locals.user;
-  const userId = loggedInUser.id;
+export const deleteAccount = async (req: AuthenticatedRequest, res: Response) => {
+ const userId = req.user?.userId;
+
+ if (!userId) {
+    return res.status(401).json({ error: "User not authenticated" });
+  }
 
   try {
     const [affectedRows] = await User.update(
@@ -100,11 +104,13 @@ export const deleteAccount = async (req: Request, res: Response) => {
   }
 };
 
-export const updateAccount = async (req: Request, res: Response) => {
+export const updateAccount = async (req: AuthenticatedRequest, res: Response) => {
+  const userId = req.user?.userId;
   const userNewData = req.body;
 
-  const loggedInUser = res.locals.user;
-  const userId = loggedInUser.id;
+  if (!userId) {
+    return res.status(401).json({ error: "User not authenticated" });
+  }
 
   try {
     const userExists = await User.findOne({
@@ -117,24 +123,49 @@ export const updateAccount = async (req: Request, res: Response) => {
         .json({ error: "User account not found or inactive" });
     }
 
-    const updateAccount = await User.update(userNewData, {
+    const updates: any = {};
+
+    if (userNewData.fullName) {
+      updates.fullName = userNewData.fullName;
+    }
+
+    if (userNewData.email) {
+      updates.email = userNewData.email;
+    }
+
+    if (userNewData.password) {
+      const hashedPassword = await hashPassword(userNewData.password);
+      if (!hashedPassword) {
+        return res.status(500).json({ error: "Failed to hash password" });
+      }
+      updates.password = hashedPassword;
+    }
+
+    if (Object.keys(updates).length === 0) {
+      return res.status(400).json({ error: "No valid fields provided to update" });
+    }
+
+    const updateResult = await User.update(updates, {
       where: { id: userId },
     });
 
-    if (updateAccount[0] === 0) {
+    if (updateResult[0] === 0) {
       return res.status(500).json({ error: "User not updated in the database" });
     }
 
     res.status(200).json({ success: "User account updated successfully" });
   } catch (error) {
-    console.error(error);
+    console.error("Update error:", error);
     res.status(500).json({ error: "Server error from update" });
   }
 };
 
-export const userDetails = async (req: Request, res: Response) => {
-  const loggedInUser = res.locals.user;
-  const userId = loggedInUser.id;
+export const userDetails = async (req: AuthenticatedRequest, res: Response) => {
+  const userId = req.user?.userId;
+
+  if (!userId) {
+    return res.status(401).json({ error: "User not authenticated" });
+  }
 
   try {
     const user = await User.findOne({
@@ -148,9 +179,18 @@ export const userDetails = async (req: Request, res: Response) => {
       return res.status(404).json({ error: "User does not exist" });
     }
 
-    res.status(200).json({ success: true, data: user });
+    const userData = user.toJSON();
+
+    res.status(200).json({
+      success: true,
+      data: {
+        fullName: userData.fullName,
+        email: userData.email,
+      },
+    });
   } catch (error) {
     console.error("Error fetching user details:", error);
     res.status(500).json({ error: "Server error. Please try again later." });
   }
 };
+

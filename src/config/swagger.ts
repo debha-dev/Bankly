@@ -23,42 +23,12 @@ const options: swaggerJSDoc.Options = {
           bearerFormat: "JWT",
         },
       },
-      schemas: {
-        Account: {
-          type: "object",
-          properties: {
-            id: {
-              type: "string",
-              example: "23498723-b1f2-4f38-8b90-d30a7cc9ef10"
-            },
-            userId: {
-              type: "string",
-              example: "a63f84db-3d6e-4ddf-a0b7-1a62ffbcaa95"
-            },
-            accountNumber: {
-              type: "string",
-              example: "BANK-1039482837"
-            },
-            accountType: {
-              type: "string",
-              enum: ["savings", "current"]
-            },
-            balance: {
-              type: "number",
-              example: 0.00
-            },
-            createdAt: {
-              type: "string",
-              format: "date-time"
-            },
-            updatedAt: {
-              type: "string",
-              format: "date-time"
-            }
-          },
-        },
-      },
     },
+    security: [
+      {
+        bearerAuth: [],
+      },
+    ],
   },
   apis: ["./src/routes/*.ts", "./src/controllers/*.ts"],
 };

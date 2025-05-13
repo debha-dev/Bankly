@@ -1,5 +1,5 @@
 import { Router } from "express";
-import {signupUserController, loginUserController, deleteAccountController, updateAccountController, userDetailsController} from "../controllers/userController";
+import {signupUserController,loginUserController,deleteAccountController,updateAccountController,userDetailsController,} from "../controllers/userController";
 import { authenticateUser } from "../middleware/authMiddleware";
 import { validateRequest } from "../middleware/validateRequest";
 import { signupSchema, loginSchema } from "../utils/validators";
@@ -11,7 +11,6 @@ userRouter.post("/login", validateRequest(loginSchema), loginUserController);
 userRouter.get("/me", authenticateUser, userDetailsController);
 userRouter.put("/update", authenticateUser, updateAccountController);
 userRouter.delete("/delete", authenticateUser, deleteAccountController);
-
 
 /**
  * @swagger
@@ -31,6 +30,8 @@ userRouter.delete("/delete", authenticateUser, deleteAccountController);
  *               email:
  *                 type: string
  *               password:
+ *                 type: string
+ *               phoneNumber:
  *                 type: string
  *     responses:
  *       201:
@@ -57,6 +58,8 @@ userRouter.delete("/delete", authenticateUser, deleteAccountController);
  *               email:
  *                 type: string
  *               password:
+ *                 type: string
+ *               phoneNumber:
  *                 type: string
  *     responses:
  *       200:
@@ -85,14 +88,10 @@ userRouter.delete("/delete", authenticateUser, deleteAccountController);
  *               properties:
  *                 fullName:
  *                   type: string
+ *                   example: John Doe
  *                 email:
  *                   type: string
- *                 createdAt:
- *                   type: string
- *                   format: date-time
- *                 updatedAt:
- *                   type: string
- *                   format: date-time
+ *                   example: johndoe@example.com
  *       401:
  *         description: Unauthorized, user not logged in
  */
@@ -105,6 +104,12 @@ userRouter.delete("/delete", authenticateUser, deleteAccountController);
  *     tags: [User]
  *     security:
  *       - bearerAuth: []
+ *     parameters:
+ *       - name: accountId
+ *         in: path
+ *         required: true
+ *         schema:
+ *           type: string
  *     requestBody:
  *       required: true
  *       content:
@@ -114,8 +119,15 @@ userRouter.delete("/delete", authenticateUser, deleteAccountController);
  *             properties:
  *               fullName:
  *                 type: string
+ *                 example: Jane Doe
  *               email:
  *                 type: string
+ *                 format: email
+ *                 example: jane@example.com
+ *               password:
+ *                 type: string
+ *                 format: password
+ *                 example: NewStrongPassword123!
  *     responses:
  *       200:
  *         description: User profile updated successfully
@@ -133,6 +145,12 @@ userRouter.delete("/delete", authenticateUser, deleteAccountController);
  *     tags: [User]
  *     security:
  *       - bearerAuth: []
+ *     parameters:
+ *       - name: accountId
+ *         in: path
+ *         required: true
+ *         schema:
+ *           type: string
  *     responses:
  *       200:
  *         description: User account deleted successfully
@@ -141,4 +159,3 @@ userRouter.delete("/delete", authenticateUser, deleteAccountController);
  *       403:
  *         description: Forbidden, cannot delete account
  */
-
