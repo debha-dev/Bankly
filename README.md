@@ -1,104 +1,107 @@
-Bankly – AI-Powered Banking API
-Overview
-Bankly is a modern, secure, and AI-powered banking API that handles user authentication, account management, transactions, and fraud detection. Built with TypeScript, Node.js, and PostgreSQL, Bankly simulates core banking operations and integrates machine learning to flag suspicious activity using Hugging Face models.
+# 💼 Bankly – AI-Powered Banking API
 
-This project is part of a professional backend portfolio, designed to showcase backend development skills for international internship applications in tech, fintech, and research.
+**Bankly** is a modern, secure, and AI-integrated banking API that simulates real-world financial operations. It features user authentication, account management, transaction processing, and fraud detection using machine learning. Built with **TypeScript**, **Node.js**, and **PostgreSQL**, Bankly is designed for scalability, clarity, and portfolio demonstration.
 
-Features
-✅ Authentication & User Management
-User Sign Up & Login with JWT authentication
+> 🎯 This project is part of a professional backend development portfolio created for international internship applications in **tech**, **fintech**, and **AI research**.
 
-Password Reset flow
+---
 
-💳 Banking Operations
-Account Creation & Retrieval
+## 🚀 Features
 
-Deposit, Withdraw, and Transfer between accounts
+### ✅ Authentication & User Management
+- User registration and login with **JWT** authentication
+- Profile update and secure password reset flow
 
-Transaction History with filtering
+### 💳 Banking Operations
+- Account creation and balance retrieval
+- **Deposit**, **Withdraw**, and **Transfer** between accounts
+- Filterable **Transaction history**
 
-🤖 AI-Powered Fraud Detection
-Real-time fraud risk analysis on transactions
+### 🤖 AI-Powered Fraud Detection
+- Real-time fraud scoring on transactions
+- Flags suspicious activity using **Hugging Face** models
+- Logs stored in a `FraudLogs` table for monitoring
 
-Fraud logs stored for audit and monitoring
+### 📄 API Documentation
+- Full Swagger documentation available at `/api-docs`
 
-Uses Hugging Face models with custom fraud features
+---
 
-🧾 Documentation
-Full Swagger documentation at /api-docs
+## 🛠️ Tech Stack
 
-Tech Stack
-Layer	Tech
-Language	TypeScript (Node.js)
-Database	PostgreSQL (via Sequelize)
-Auth	JWT Tokens
-AI Integration	Hugging Face
-Docs	Swagger (OpenAPI)
-Testing	Postman, Swagger UI
+| Layer         | Technology               |
+|--------------|---------------------------|
+| Language      | TypeScript (Node.js)      |
+| Database      | PostgreSQL + Sequelize    |
+| Auth          | JWT Tokens                |
+| AI Integration| Hugging Face Transformers |
+| Docs          | Swagger (OpenAPI)         |
+| Testing       | Postman, Swagger UI       |
 
-API Endpoints Summary
-🔐 Auth
-POST /signup
+---
 
-POST /login
+## 📌 API Endpoints Summary
 
-GET /me
+### 🔐 Authentication
+- `POST /signup` – Register a new user  
+- `POST /login` – Login with email and password  
+- `GET /me` – Fetch user profile  
+- `PUT /update` – Update profile  
+- `DELETE /delete` – Delete account  
 
-PUT /update
+### 💼 Transactions
+- `POST /transactions/deposit/:accountId`  
+- `POST /transactions/withdraw/:accountId`  
+- `POST /transactions/transfer`  
+- `GET /transactions` – View history  
 
-DELETE /delete
+### 🧠 Fraud Detection
+- `GET /fraud-logs` – View flagged transactions (authenticated)
 
-💼 Transactions
-POST /transactions/deposit/:accountId
+---
 
-POST /transactions/withdraw/:accountId
+## 🧠 How AI Fraud Detection Works
 
-POST /transactions/transfer
+Each transaction is sent to an AI model with custom fraud features such as:
+- `userId`
+- `amount`
+- `accountAge`
+- `transactionFrequency`
 
-GET /transactions
+If flagged as suspicious, the transaction is logged for the user and admins to review.
 
-🧠 Fraud Detection
-GET /fraud-logs (for authenticated users)
+---
 
-How AI Fraud Detection Works
-Every transaction is checked against an AI model using features like:
+## 📦 Getting Started
 
-userId
+### 1️⃣ Clone the Repository
 
-amount
-
-accountAge
-
-transactionFrequency
-
-If a transaction is flagged, it's logged to the FraudLogs table and returned to the user as a warning.
-
-Getting Started
-📦 Clone and Setup
-bash
-Copy code
+```bash
 git clone https://github.com/debha-dev/Bankly.git
 cd bankly
 npm install
-⚙️ Environment Variables
+2️⃣ Set Up Environment Variables
 Create a .env file:
 
 env
-Copy code
+Copy
+Edit
 PORT=5055
 JWT_SECRET=your_jwt_secret
 DATABASE_URL=your_postgres_connection_string
 HUGGING_FACE_API_KEY=your_api_key
-🚀 Start the Server
+3️⃣ Run the Server
 bash
-Copy code
+Copy
+Edit
 npm start
-Go to http://localhost:5055/api-docs to view Swagger documentation.
+Visit http://localhost:5055/api-docs to view Swagger documentation.
 
-Testing the API
-Example: Register a New User
+🧪 Testing the API
+Example: Register User
 http
-Copy code
+Copy
+Edit
 POST /signup
 {
   "email": "jane@bankly.com",
@@ -106,9 +109,12 @@ POST /signup
 }
 Example: Deposit Money
 http
-Copy code
+Copy
+Edit
 POST /transactions/deposit/:accountId
-Headers: Authorization: Bearer <token>
+Headers:
+  Authorization: Bearer <token>
+
 Body:
 {
   "amount": 5000,
@@ -116,30 +122,30 @@ Body:
 }
 Example: Get Fraud Logs
 http
-Copy code
+Copy
+Edit
 GET /fraud-logs
-Headers: Authorization: Bearer <token>
-Deployment
-The project will be deployed on Render soon so others can test the live API without needing to clone or run the server locally.
+Headers:
+  Authorization: Bearer <token>
+🌐 Deployment
+The project will be deployed on Render to allow live testing without cloning.
+🔗 A public link and demo credentials will be added here once deployed.
 
-A public API link and demo credentials will be added here after deployment.
+🤝 Contributing
+Fork the repository
 
-Contributing
-Feel free to:
+Create a new branch: git checkout -b feature-name
 
-Fork the repo
+Commit your changes
 
-Create a feature branch: git checkout -b feature-x
+Push and open a pull request
 
-Commit and push your changes
+📄 License
+This project is licensed under the MIT License.
 
-Submit a pull request
-
-License
-Licensed under the MIT License.
-
-Project Status
+📊 Project Status
 ✅ MVP Complete
-🚧 AI Fraud Detection Phase in Progress
-🌐 Render Deployment Coming Soon
 
+⚙️ AI Fraud Detection Phase: In Progress
+
+🌐 Render Deployment: Coming Soon

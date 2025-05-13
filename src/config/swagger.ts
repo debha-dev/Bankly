@@ -33,8 +33,13 @@ const options: swaggerJSDoc.Options = {
   apis: ["./src/routes/*.ts", "./src/controllers/*.ts"],
 };
 
-const swaggerSpec = swaggerJSDoc(options);
+export const swaggerSpec = swaggerJSDoc(options);
 
 export const setupSwagger = (app: Express) => {
   app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+  
+  app.get("/swagger.json", (_req, res) => {
+    res.setHeader("Content-Type", "application/json");
+    res.send(swaggerSpec);
+  });
 };
