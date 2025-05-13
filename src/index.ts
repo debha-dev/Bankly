@@ -5,6 +5,8 @@ import { connectDB } from "./config/databaseConfig";
 import { setupSwagger } from "./config/swagger";
 import {userRouter} from "./routes/userRoute";
 import { accountRouter } from "./routes/accountRoute";
+import { transactionRouter } from "./routes/transactionRoutes";
+import { fraudRouter } from "./routes/fraudLogRoutes";
 
 
 dotenv.config();
@@ -17,6 +19,8 @@ app.use(cors());
 
 app.use("/api/users", userRouter);
 app.use("/api/accounts", accountRouter);
+app.use("/api/transactions", transactionRouter)
+app.use("/api/fraud-logs", fraudRouter);
 
 setupSwagger(app);
 
