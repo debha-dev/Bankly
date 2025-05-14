@@ -18,7 +18,7 @@ if (!databaseUrl) {
 
 const isProduction = process.env.NODE_ENV === "production";
 
-const sequelize = new Sequelize({
+const sequelize = new Sequelize(databaseUrl,{
   dialect: "postgres",
   host: process.env.DB_HOST, 
   port: Number(process.env.DB_PORT) || 5432, 
@@ -29,7 +29,7 @@ const sequelize = new Sequelize({
   dialectOptions: isProduction && process.env.DB_CA_CERTIFICATE ? {
     ssl: {
       require: true,
-      rejectUnauthorized: true,
+      rejectUnauthorized: false,
       ca: process.env.DB_CA_CERTIFICATE,
     },
   } : {},
