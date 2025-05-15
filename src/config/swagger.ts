@@ -2,7 +2,7 @@ import swaggerJSDoc from "swagger-jsdoc";
 import swaggerUi from "swagger-ui-express";
 import { Express } from "express";
 
-const options: swaggerJSDoc.Options = {
+const options= {
   definition: {
     openapi: "3.0.0",
     info: {
@@ -30,8 +30,8 @@ const options: swaggerJSDoc.Options = {
       },
     ],
   },
-  apis: ["./src/routes/*.ts", "./src/controllers/*.ts"],
-};
+  apis: ["./src/routes/*.ts", "./src/controllers/*.ts", "./src/types/*.ts"],
+}as Parameters<typeof swaggerJSDoc>[0];
 
 export const swaggerSpec = swaggerJSDoc(options);
 
